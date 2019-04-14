@@ -42,16 +42,19 @@ class PieceCanvas extends Component {
     componentDidMount() {
         const me = this;
         const container = me.refs[containerRef];
-        container.addEventListener('mousemove', me.drag);
         container.addEventListener('click',     me.close);
-        container.addEventListener('mousedown', me.dragStart);
         container.addEventListener('mouseup',   me.dragEnd);
+        container.addEventListener('mousedown', me.dragStart);
+        container.addEventListener('mousemove', me.drag);
         me.makePiece();
     }
 
     close(e) {
+        //console.log('close')
         const me = this;
         if (closeCls === e.target.className) {
+            e.stopPropagation();
+            me._isDragging = false;
             const myId = me.props.uid;
             const startCoo = {
                 x: me.props.startPos.x - me.getWidth() + moveBy,    // calculate start position
@@ -64,6 +67,7 @@ class PieceCanvas extends Component {
 
     //#region drag
     drag(e) {
+        //console.log('drag')
         e.stopPropagation();
         const me = this;
         if(e.buttons === 1 && me._isDragging) {
@@ -83,9 +87,11 @@ class PieceCanvas extends Component {
         const container = me.refs[containerRef];
         container.className = [baseCls,dragCls].join(' ');
         me._isDragging = true;
+        console.log('dragstart')
     }
 
     dragEnd(e) {
+        //console.log('dragend')
         e.stopPropagation();
         const me = this;
         const container = me.refs[containerRef];

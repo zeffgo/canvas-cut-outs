@@ -10,6 +10,7 @@ class App extends Component {
     const randomBtnCls = 'fas fa-random';
     return (
       <div className="App">
+        <h3 id='welcome'>Please draw a path to create a puzzle piece</h3>
         <Btn onClick={pageReload} cls={randomBtnCls}>&nbsp;&nbsp;&nbsp;{randomBtnText}</Btn>
         <MainCanvas src={imgSrc} />
       </div>
