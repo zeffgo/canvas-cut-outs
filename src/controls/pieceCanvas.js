@@ -87,7 +87,7 @@ class PieceCanvas extends Component {
         const container = me.refs[containerRef];
         container.className = [baseCls,dragCls].join(' ');
         me._isDragging = true;
-        console.log('dragstart')
+        //console.log('dragstart')
     }
 
     dragEnd(e) {
