@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import './pieceCanvas.css';
-import {debounce} from '../utilities';
 
 // main refs
 const containerRef = 'containerRef';
