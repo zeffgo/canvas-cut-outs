@@ -41,15 +41,17 @@ class PieceCanvas extends Component {
     componentDidMount() {
         const me = this;
         const container = me.refs[containerRef];
+        const canvas = me.refs[canvasRef];
         container.addEventListener('click',     me.close);
-        container.addEventListener('mouseup',   me.dragEnd);
-        container.addEventListener('mousedown', me.dragStart);
-        container.addEventListener('mousemove', me.drag);
+        canvas.addEventListener('mouseup',   me.dragEnd);
+        canvas.addEventListener('mousedown', me.dragStart);
+        canvas.addEventListener('mousemove', me.drag);
         me.makePiece();
     }
 
     close(e) {
         //console.log('close')
+        e.stopPropagation();
         const me = this;
         if (closeCls === e.target.className) {
             e.stopPropagation();
