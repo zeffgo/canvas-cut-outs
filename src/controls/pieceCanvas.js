@@ -20,10 +20,6 @@ const endTransitionTime = 0.1;
 //  i didnt use setstate and reflows here.
 class PieceCanvas extends Component {
 
-    // drag flag. dont want reflows on this one, so not a state property.
-    // obvious-IMPORTANT - MUST be instance property.
-    _isDragging = false;
-
     constructor(props) {
         super();
         const me = this;
@@ -55,7 +51,6 @@ class PieceCanvas extends Component {
         const me = this;
         if (closeCls === e.target.className) {
             e.stopPropagation();
-            me._isDragging = false;
             const myId = me.props.uid;
             const startCoo = {
                 x: me.props.startPos.x - me.getWidth() + moveBy,    // calculate start position
@@ -71,7 +66,7 @@ class PieceCanvas extends Component {
         //console.log('drag')
         e.stopPropagation();
         const me = this;
-        if(e.buttons === 1 && me._isDragging) {
+        if(e.buttons === 1) {
             const [width, height] = [me.getWidth(), me.getHeight()];  // basic vars
             const el = me.refs[containerRef];
             me.state.currentPos = {x: (e.clientX-width/2)+'px', y: (e.clientY-height/2)+'px'};
@@ -80,14 +75,15 @@ class PieceCanvas extends Component {
         }
     }
 
-    // below methods are part of mechanism to prevent
+    // old comment: below methods WERE part of mechanism to prevent
     // `drag overlapping` when dragging piece over piece.
+    // by using _isDragging flag.
+    // update: solved more elegantly with zIndex
     dragStart(e) {
         e.stopPropagation();
         const me = this;
         const container = me.refs[containerRef];
         container.className = [baseCls,dragCls].join(' ');
-        me._isDragging = true;
         //console.log('dragstart')
     }
 
@@ -97,7 +93,6 @@ class PieceCanvas extends Component {
         const me = this;
         const container = me.refs[containerRef];
         container.className = baseCls;
-        me._isDragging = false;
     }
     //#endregion
 
