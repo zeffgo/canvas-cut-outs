@@ -13,7 +13,7 @@ const dragCls = 'x-dragging';
 // value to move piece v/h to show it is cut out
 const moveBy = 5;
 
-const endTransitionTime = 0.35;
+const endTransitionTime = 0.15;
 
 //  on this class overall: i know react's reflow principle.
 //  But i think its not best for dragging, so
