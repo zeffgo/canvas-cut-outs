@@ -89,7 +89,6 @@ class MainCanvas extends Component {
         const me = this;
         return new Promise(function (resolve, reject) {
             const ctx = me.getContext();
-            ctx.clearRect(0, 0, me.refs.myCanvas.width, me.refs.myCanvas.height);   // redraws
             const imgSrc = me.state.imgSrc;
             const img = new Image();
             img.src = imgSrc;
