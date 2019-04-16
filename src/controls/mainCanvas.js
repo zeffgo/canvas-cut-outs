@@ -67,7 +67,7 @@ class MainCanvas extends Component {
                     const ctx = me.getContext();
                     ctx.beginPath(); // begin
                     const positions = p.props.positions;
-                    positions.forEach((pos) => me.draw(null, true, pos));
+                    positions.forEach((pos) => me.draw(null,  pos));
                     me.endDrawing(null, true);
                 });
             });
@@ -111,10 +111,9 @@ class MainCanvas extends Component {
 
     //  plots drawing by event or from recorded dot positions, args:
     //  e - event
-    //  fromRecord - the user isn't drawing with mouse, we are recreating a previously 'recorded' path
     //  recordedPos - a position from a 'recorded' path's positions array
-    draw(e, fromRecord, recordedPos) {
-        if (!isDrawing && !fromRecord) {
+    draw(e, recordedPos) {
+        if (!isDrawing && !recordedPos) {
             return;
         }
         const me = this;
@@ -124,7 +123,7 @@ class MainCanvas extends Component {
         ctx.lineCap = 'round';
         ctx.strokeStyle = '#000';
 
-        if(!fromRecord) me.setPosition(e);
+        if(!recordedPos) me.setPosition(e);
         let [x, y] = [pos.x, pos.y];
         if(recordedPos) {
             [x, y] = [recordedPos.x, recordedPos.y];
