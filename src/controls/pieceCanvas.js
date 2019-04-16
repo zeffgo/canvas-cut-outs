@@ -13,12 +13,19 @@ const dragCls = 'x-dragging';
 // value to move piece v/h to show it is cut out
 const moveBy = 5;
 
-const endTransitionTime = 0.1;
+const endTransitionTime = 0.35;
 
 //  on this class overall: i know react's reflow principle.
 //  But i think its not best for dragging, so
 //  i didnt use setstate and reflows here.
 class PieceCanvas extends Component {
+
+    // because dragging listener is over whole document,
+    // we need inidcation for class method .drag if this
+    // specific instance is being dragged.
+    // without this, moving single piece will move all
+    // existing pieces
+    _isDragging = false;
 
     constructor(props) {
         super();
@@ -38,10 +45,21 @@ class PieceCanvas extends Component {
         const me = this;
         const container = me.refs[containerRef];
         const canvas = me.refs[canvasRef];
+
+        // close handler
         container.addEventListener('click',     me.close);
+
+        // on start/end drag listners
         canvas.addEventListener('mouseup',   me.dragEnd);
         canvas.addEventListener('mousedown', me.dragStart);
-        canvas.addEventListener('mousemove', me.drag);
+
+        // this has to be whole document and not the piece,
+        // otherwise if we swing mouse fast, we might get out of
+        // the element, and the over the document(and not the
+        // piece) - and the dragging will be f#d up
+        document.addEventListener('mousemove', me.drag);
+
+        // prepare the piece
         me.makePiece();
     }
 
@@ -66,7 +84,7 @@ class PieceCanvas extends Component {
         //console.log('drag')
         e.stopPropagation();
         const me = this;
-        if(e.buttons === 1) {
+        if(e.buttons === 1 && me._isDragging) {
             const [width, height] = [me.getWidth(), me.getHeight()];  // basic vars
             const el = me.refs[containerRef];
             me.state.currentPos = {x: (e.clientX-width/2)+'px', y: (e.clientY-height/2)+'px'};
@@ -84,6 +102,7 @@ class PieceCanvas extends Component {
         const me = this;
         const container = me.refs[containerRef];
         container.className = [baseCls,dragCls].join(' ');
+        me._isDragging = true;
         //console.log('dragstart')
     }
 
@@ -93,6 +112,7 @@ class PieceCanvas extends Component {
         const me = this;
         const container = me.refs[containerRef];
         container.className = baseCls;
+        me._isDragging = false;
     }
     //#endregion
 
