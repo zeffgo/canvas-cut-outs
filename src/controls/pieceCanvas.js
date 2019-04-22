@@ -14,6 +14,7 @@ const dragCls = 'x-dragging';
 const moveBy = 5;
 
 const endTransitionTime = 0.15;
+const ms = 1000;
 
 //  on this class overall: i know react's reflow principle.
 //  But i think its not best for dragging, so
@@ -66,7 +67,7 @@ class PieceCanvas extends Component {
                 y: me.props.startPos.y - me.getHeight() + moveBy
             };
             me.refs[containerRef].style = 'transition: '+endTransitionTime+'s; left: '+startCoo.x+'px; top: '+startCoo.y+'px';
-            setTimeout(()=>me.props.onRemove(myId), endTransitionTime*1000);
+            setTimeout(()=>me && me.props.onRemove(myId), endTransitionTime*ms);
         }
     }
 
