@@ -43,15 +43,6 @@ class PieceCanvas extends Component {
 
     componentDidMount() {
         const me = this;
-        const container = me.refs[containerRef];
-        const canvas = me.refs[canvasRef];
-
-        // close handler
-        container.addEventListener('click',     me.close);
-
-        // on start/end drag listners
-        canvas.addEventListener('mouseup',   me.dragEnd);
-        canvas.addEventListener('mousedown', me.dragStart);
 
         // this has to be whole document and not the piece,
         // otherwise if we swing mouse fast, we might get out of
@@ -160,9 +151,9 @@ class PieceCanvas extends Component {
         const me = this;
         const coordinates = me.getCoordinates();
         return (
-            <figure ref={containerRef} style={{...coordinates}} className={baseCls}>
+            <figure onMouseUp={me.dragEnd} onMouseDown={me.dragStart} ref={containerRef} style={{...coordinates}} className={baseCls}>
                 <canvas ref={canvasRef}></canvas>
-                <i className={closeCls}></i>
+                <i onClick={me.close} className={closeCls}></i>
             </figure>
         );
     }

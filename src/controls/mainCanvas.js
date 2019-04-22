@@ -18,7 +18,7 @@ class MainCanvas extends Component {
 
     constructor(props) {
         super(props);
-        let me = this;
+        const me = this;
         me.state = {
             imgSrc: props.src,
             pieces: []
@@ -43,7 +43,6 @@ class MainCanvas extends Component {
     componentDidMount() {
         const me = this;
         me.setupImage();
-        me.setupListeners();
     }
 
     // filter out removed piece, trigger reflow, re-init canvas (must use js for canvas, so React render is not enough)
@@ -74,16 +73,7 @@ class MainCanvas extends Component {
     }
     //#endregion
 
-    //#region preconditions
-    // setup listeners for interacting
-    setupListeners() {
-        const me = this;
-        const myC = me.refs.myCanvas;
-        myC.addEventListener('mousedown', me.setPosition);    // starts `recording`
-        myC.addEventListener('mousemove', me.draw);           // updates `recording feed`
-        myC.addEventListener('mouseup', me.endDrawing)
-    }
-
+    //#region
     // promisified this to optimize reflows
     setupImage() {
         const me = this;
@@ -135,7 +125,7 @@ class MainCanvas extends Component {
 
     setPosition(e) {
         const me = this;
-        const coo = {x: e.offsetX, y: e.offsetY}; // coordinate on canvas
+        const coo = {x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY}; // coordinate on canvas
 
         if (!isDrawing) {   // this means we start drawing now, cleanup, init min/max and begin
             me.cleanupValues();
@@ -209,7 +199,12 @@ class MainCanvas extends Component {
         return (
             <div>
                 <section id='canvasWrapper'>
-                    <canvas ref={canvasRef}></canvas>
+                    <canvas
+                        onMouseDown={me.setPosition}
+                        onMouseMove={me.draw}
+                        onMouseUp={me.endDrawing}
+                        ref={canvasRef}
+                    ></canvas>
                 </section>
                 {me.state.pieces}
             </div>
